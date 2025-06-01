@@ -41,3 +41,19 @@ print_commit:
 		echo "📁 $$module 分支：$$branch | commit：$$commit"; \
 		cd - >/dev/null; \
 	done
+
+nginx_conf:
+	@echo "生成 nginx/default.conf"
+	@mkdir -p nginx
+	@rm -f nginx/default.conf
+	@echo "server {" >> nginx/default.conf
+	@echo "  listen 80;" >> nginx/default.conf
+	@echo "  server_name localhost;" >> nginx/default.conf
+	@for module in $(SUBMODULES); do \
+		echo "  location /$$module/ {" >> nginx/default.conf; \
+		echo "    root /usr/share/nginx/html;" >> nginx/default.conf; \
+		echo "    index index.html;" >> nginx/default.conf; \
+		echo "    try_files \$$uri \$$uri/ /$$module/index.html;" >> nginx/default.conf; \
+		echo "  }" >> nginx/default.conf; \
+	done
+	@echo "}" >> nginx/default.conf
