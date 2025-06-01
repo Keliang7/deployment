@@ -50,6 +50,9 @@ nginx_conf:
 	@echo "  listen 80;" >> nginx/default.conf
 	@echo "  server_name localhost;" >> nginx/default.conf
 	@for module in $(SUBMODULES); do \
+		echo "  location = /$$module {" >> nginx/default.conf; \
+		echo "    return 302 /$$module/#/;" >> nginx/default.conf; \
+		echo "  }" >> nginx/default.conf; \
 		echo "  location /$$module/ {" >> nginx/default.conf; \
 		echo "    root /usr/share/nginx/html;" >> nginx/default.conf; \
 		echo "    index index.html;" >> nginx/default.conf; \
@@ -57,3 +60,12 @@ nginx_conf:
 		echo "  }" >> nginx/default.conf; \
 	done
 	@echo "}" >> nginx/default.conf
+
+docker_build:
+	@docker build -t polymer-nginx .
+
+docker_run:
+	@docker run --rm -d -p 8080:80 --name polymer-nginx polymer-nginx
+
+docker_stop:
+	@docker rm -f polymer-nginx
