@@ -20,11 +20,16 @@ update:
 	done
 
 build:
+	@rm -rf _stage_dist
+	@mkdir -p _stage_dist
 	@for module in $(SUBMODULES); do \
 		echo "📦 构建 $$module"; \
 		cd $$module && \
 		pnpm install --ignore-scripts && \
 		pnpm build:dev && \
+		rm -rf ../_stage_dist/$$module && \
+		mkdir -p ../_stage_dist/$$module && \
+		cp -r dist/* ../_stage_dist/$$module/ && \
 		cd - >/dev/null; \
 	done
 
