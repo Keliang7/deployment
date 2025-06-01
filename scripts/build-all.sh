@@ -9,11 +9,12 @@ echo ""
 echo "🧾 当前子模块 commit 信息："
 cd partner
 git checkout develop
+git pull origin develop
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 COMMIT=$(git rev-parse --short HEAD)
 echo "📁 partner 分支：$BRANCH | commit: $COMMIT"
 
 echo "📦 安装依赖并构建 partner"
-pnpm install
+pnpm install --ignore-scripts
 pnpm build:dev
 cd ..
