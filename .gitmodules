@@ -1,0 +1,4 @@
+[submodule "partner"]
+	path = partner
+	url = git@github.com:fsst-frontend/partner.git
+	branch = develop
